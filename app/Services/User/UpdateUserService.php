@@ -19,7 +19,8 @@ class UpdateUserService extends BaseService
     public function handle()
     {
         try {
-            $this->userRepository->update($this->data, $this->data->id);
+            dump('Update UserService');
+            // $this->userRepository->update($this->data, $this->data->id);
             return true;
         } catch (Exception $e) {
             Log::info($e);

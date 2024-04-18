@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Services\Payment\Gateway\FincodePaymentService;
-use App\Services\Payment\Gateway\MomoPaymentService;
-use App\Services\Payment\Gateway\StripePaymentService;
 use App\Services\Payment\PaymentProcessorService;
 use Illuminate\Http\Request;
 
