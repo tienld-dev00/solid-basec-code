@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Interfaces\Email\EmailServiceInterface;
 use App\Interfaces\User\UserRepositoryInterface;
-use App\Repositories\UserRepository;
+use App\Repositories\User\UserRepository;
 use App\Services\Email\EmailService;
 use Illuminate\Support\ServiceProvider;
 
