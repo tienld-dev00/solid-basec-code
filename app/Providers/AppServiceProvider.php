@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Interfaces\Auth\AuthRepositoryInterface;
 use App\Interfaces\Email\EmailServiceInterface;
 use App\Interfaces\User\UserRepositoryInterface;
+use App\Repositories\AuthRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Email\EmailService;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
         $this->app->bind(EmailServiceInterface::class, EmailService::class);
     }
 
