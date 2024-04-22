@@ -163,8 +163,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'password' => [
+            'regex' => 'The password cannot contain spaces.',
+        ],
+        'email' => [
+            'regex' => 'The email must be a Gmail address.',
         ],
     ],
 
