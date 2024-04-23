@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginUserController;
-use App\Http\Controllers\Auth\RegisterUserController;
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Payment\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::POST('payment', [PaymentController::class, 'payment']);
 
-Route::post('/register', [RegisterUserController::class, 'store']);
-Route::post('/login', [LoginUserController::class, 'store']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
