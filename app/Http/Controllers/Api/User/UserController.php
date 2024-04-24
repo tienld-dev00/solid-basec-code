@@ -8,7 +8,6 @@ use App\Http\Requests\Api\UpdateUserRequest;
 use App\Interfaces\User\UserRepositoryInterface;
 use App\Services\User\CreateUserService;
 use App\Services\User\DeleteUserService;
-use App\Services\User\GetUserService;
 use App\Services\User\UpdateUserService;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
-     * Get a listing of the user.
+     * Get all user
      *
      * @return HttpResponse
      */
@@ -36,7 +35,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user in storage.
+     * Create user
      *
      * @param  CreateUserRequest $request
      * @return HttpResponse
@@ -59,7 +58,7 @@ class UserController extends Controller
     }
 
     /**
-     * Get the specified user.
+     * Get user
      *
      * @param  int  $id
      * @return HttpResponse
@@ -81,7 +80,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user in storage.
+     * Update user
      *
      * @param  UpdateUserRequest $request
      * @param  int  $id
@@ -103,7 +102,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified user from storage.
+     * Delete user
      *
      * @param  int  $id
      * @return HttpResponse
