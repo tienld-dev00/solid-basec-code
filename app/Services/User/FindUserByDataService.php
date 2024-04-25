@@ -7,7 +7,7 @@ use App\Services\BaseService;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class DeleteUserService extends BaseService
+class FindUserByDataService extends BaseService
 {
     protected $userRepository;
 
@@ -19,9 +19,11 @@ class DeleteUserService extends BaseService
     public function handle()
     {
         try {
-            $this->userRepository->delete($this->data);
-
-            return true;
+            return $this->userRepository->findByData(
+                $this->data['column'],
+                $this->data['value'],
+                $this->data['operator'] ?? '='
+            );
         } catch (Exception $e) {
             Log::info($e);
 
