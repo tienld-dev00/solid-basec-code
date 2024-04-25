@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CreateUserRequest;
 use App\Http\Requests\Api\UpdateUserRequest;
-use App\Interfaces\User\UserRepositoryInterface;
 use App\Services\User\CreateUserService;
 use App\Services\User\DeleteUserService;
+use App\Services\User\FindUserByDataService;
+use App\Services\User\GetUserService;
 use App\Services\User\UpdateUserService;
 use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -58,25 +58,23 @@ class UserController extends Controller
     }
 
     /**
-     * Get user
+     * Get user by id
      *
      * @param  int  $id
      * @return HttpResponse
      */
     public function show($id)
     {
-        try {
-            $user = resolve(UserRepositoryInterface::class)->find($id);
-
-            return $this->responseSuccess([
-                'user' => $user,
-                'message' => __('users.get_success')
-            ]);
-        } catch (\Exception $e) {
-            Log::error($e);
-
+        $data = ['column' => 'id', 'value' => $id];
+        $result = resolve(FindUserByDataService::class)->setParams($data)->handle();
+        if (count($result) === 0) {
             return $this->responseErrors(__('users.get_fail'));
         }
+
+        return $this->responseSuccess([
+            'user' => $result[0],
+            'message' => __('users.get_success')
+        ]);
     }
 
     /**
