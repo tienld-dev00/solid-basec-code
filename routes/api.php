@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Payment\PaymentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,13 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::POST('payment', [PaymentController::class, 'payment']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::resources(['users' => UserController::class]);
+Route::middleware(['auth:api'])->group(function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('', [UserController::class, 'index']);
+        Route::post('', [UserController::class, 'store']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::patch('/{user}', [UserController::class, 'update'])->can('update', 'user');
+    });
+});
