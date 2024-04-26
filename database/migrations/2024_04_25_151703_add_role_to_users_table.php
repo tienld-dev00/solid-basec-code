@@ -25,8 +25,11 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        if (Schema::hasColumn('users', 'role')) {
+            Schema::table('users', function (Blueprint $table) {
+
+                $table->dropColumn('role');
+            });
+        }
     }
 };
