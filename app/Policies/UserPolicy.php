@@ -35,8 +35,8 @@ class UserPolicy
     public function update(User $user, User $model)
     {
         if (
-            $user->isStore() && !$model->isAdmin() && !$model->isStore() || # Store
-            $user->id === $model->id # itself
+            $user->isStore() && !$model->isAdmin() && !$model->isStore() || /** store */
+            $user->id === $model->id /** itself */
         ) {
             return true;
         }
