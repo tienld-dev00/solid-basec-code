@@ -8,5 +8,5 @@ interface UserRepositoryInterface extends CrudRepositoryInterface
 {
     public function findByEmail($email);
 
-    public function findByData($column, $data, $operator = '=');
+    public function findByData($column, $data);
 }

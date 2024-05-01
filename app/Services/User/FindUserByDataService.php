@@ -22,7 +22,6 @@ class FindUserByDataService extends BaseService
             return $this->userRepository->findByData(
                 $this->data['column'],
                 $this->data['value'],
-                $this->data['operator'] ?? '='
             );
         } catch (Exception $e) {
             Log::info($e);

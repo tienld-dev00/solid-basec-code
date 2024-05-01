@@ -68,12 +68,13 @@ class UserController extends Controller
     {
         $data = ['column' => 'id', 'value' => $id];
         $result = resolve(FindUserByDataService::class)->setParams($data)->handle();
-        if (count($result) === 0) {
+
+        if (!$result) {
             return $this->responseErrors(__('messages.users.get_fail'));
         }
 
         return $this->responseSuccess([
-            'user' => $result[0],
+            'user' => $result,
             'message' => __('messages.users.get_success')
         ]);
     }
