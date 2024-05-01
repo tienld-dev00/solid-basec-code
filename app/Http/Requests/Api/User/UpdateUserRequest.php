@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Api\User;
 
+use App\Enums\UserRole;
 use App\Http\Requests\BaseRequest;
+use Illuminate\Validation\Rule;
 
-class LoginRequest extends BaseRequest
+class UpdateUserRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,19 +16,26 @@ class LoginRequest extends BaseRequest
     public function rules()
     {
         return [
+            'name' => [
+                'string',
+                'between:6,100',
+            ],
             'email' => [
-                'required',
                 'string',
                 'email',
                 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
-                'exists:users,email'
+                'unique:users,email,' . $this->user->id
             ],
             'password' => [
-                'required',
                 'string',
                 'min:8',
                 'max:50',
                 'regex:/^\S*$/'
+            ],
+            'role' => [
+                Rule::prohibitedIf($this->user()->role !== UserRole::ADMIN),
+                'integer',
+                Rule::in(UserRole::getValues())
             ],
         ];
     }

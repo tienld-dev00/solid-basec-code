@@ -65,14 +65,14 @@ class Handler extends ExceptionHandler
         if ($th instanceof ModelNotFoundException) {
             return response()->json([
                 'code' => Response::HTTP_NOT_FOUND,
-                'message' => __('httpStatusMessage.not_found')
+                'message' => __('messages.http_status_message.not_found')
             ], Response::HTTP_NOT_FOUND);
         }
 
         if ($th instanceof AuthorizationException) {
             return response()->json([
                 'code' => Response::HTTP_UNAUTHORIZED,
-                'message' => __('auth.unauthorized')
+                'message' => __('messages.auth.unauthorized')
             ], Response::HTTP_UNAUTHORIZED);
         }
 

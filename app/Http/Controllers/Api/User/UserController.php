@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\CreateUserRequest;
-use App\Http\Requests\Api\UpdateUserRequest;
+use App\Http\Requests\Api\User\CreateUserRequest;
+use App\Http\Requests\Api\User\UpdateUserRequest;
 use App\Models\User;
 use App\Services\User\CreateUserService;
 use App\Services\User\DeleteUserService;
@@ -28,11 +28,11 @@ class UserController extends Controller
         if ($users) {
             return $this->responseSuccess([
                 'users' => $users,
-                'message' => __('users.get_all_success')
+                'message' => __('messages.users.get_all_success')
             ]);
         }
 
-        return $this->responseErrors(__('users.get_all_fail'));
+        return $this->responseErrors(__('messages.users.get_all_fail'));
     }
 
     /**
@@ -49,13 +49,13 @@ class UserController extends Controller
             return $this->responseSuccess(
                 [
                     'user' => $user,
-                    'message' => __('users.create_success')
+                    'message' => __('messages.users.create_success')
                 ],
                 Response::HTTP_CREATED
             );
         }
 
-        return $this->responseErrors(__('users.create_fail'));
+        return $this->responseErrors(__('messages.users.create_fail'));
     }
 
     /**
@@ -69,12 +69,12 @@ class UserController extends Controller
         $data = ['column' => 'id', 'value' => $id];
         $result = resolve(FindUserByDataService::class)->setParams($data)->handle();
         if (count($result) === 0) {
-            return $this->responseErrors(__('users.get_fail'));
+            return $this->responseErrors(__('messages.users.get_fail'));
         }
 
         return $this->responseSuccess([
             'user' => $result[0],
-            'message' => __('users.get_success')
+            'message' => __('messages.users.get_success')
         ]);
     }
 
@@ -93,11 +93,11 @@ class UserController extends Controller
         if ($user) {
             return $this->responseSuccess([
                 'user' => $user,
-                'message' => __('users.update_success')
+                'message' => __('messages.users.update_success')
             ]);
         }
 
-        return $this->responseErrors(__('users.update_fail'));
+        return $this->responseErrors(__('messages.users.update_fail'));
     }
 
     /**
@@ -111,9 +111,9 @@ class UserController extends Controller
         $user = resolve(DeleteUserService::class)->setParams($id)->handle();
 
         if ($user) {
-            return $this->responseSuccess(['message' => __('users.delete_success')]);
+            return $this->responseSuccess(['message' => __('messages.users.delete_success')]);
         }
 
-        return $this->responseErrors(__('users.delete_fail'));
+        return $this->responseErrors(__('messages.users.delete_fail'));
     }
 }

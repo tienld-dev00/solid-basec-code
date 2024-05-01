@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\LoginRequest;
-use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Requests\Api\Auth\LoginRequest;
+use App\Http\Requests\Api\Auth\RegisterRequest;
 use App\Services\Auth\RegisterUserService;
 use Illuminate\Http\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         if (!$token = Auth::attempt($request->validated())) {
             return $this->responseErrors(
-                __('auth.failed'),
+                __('messages.auth.failed'),
                 Response::HTTP_UNAUTHORIZED
             );
         }
@@ -32,7 +32,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => $user,
-            'message' => __('auth.login_success')
+            'message' => __('messages.auth.login_success')
         ]);
     }
 
@@ -47,14 +47,14 @@ class AuthController extends Controller
 
         if (!$result) {
             return $this->responseErrors(
-                __('auth.register_server_error'),
+                __('messages.auth.register_server_error'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
 
         return $this->responseSuccess([
             'user' => $result,
-            'message' => __('auth.register_success')
+            'message' => __('messages.auth.register_success')
         ], Response::HTTP_CREATED);
     }
 }
