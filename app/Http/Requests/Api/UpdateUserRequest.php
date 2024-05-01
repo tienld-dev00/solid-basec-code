@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Enums\UserRole;
 use App\Http\Requests\BaseRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends BaseRequest
 {
@@ -22,13 +24,18 @@ class UpdateUserRequest extends BaseRequest
                 'string',
                 'email',
                 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
-                'unique:users,email,' . $this->user
+                'unique:users,email,' . $this->user->id
             ],
             'password' => [
                 'string',
                 'min:8',
                 'max:50',
                 'regex:/^\S*$/'
+            ],
+            'role' => [
+                Rule::prohibitedIf($this->user()->role !== UserRole::ADMIN),
+                'integer',
+                Rule::in(UserRole::getValues())
             ],
         ];
     }

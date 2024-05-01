@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response as HttpResponse;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +50,32 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Custom handle error
+     * 
+     * @param mixed $request
+     * @param Throwable $th
+     * 
+     * @return HttpResponse
+     */
+    public function render($request, Throwable $th)
+    {
+        if ($th instanceof ModelNotFoundException) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => __('httpStatusMessage.not_found')
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($th instanceof AuthorizationException) {
+            return response()->json([
+                'code' => Response::HTTP_UNAUTHORIZED,
+                'message' => __('auth.unauthorized')
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return parent::render($request, $th);
     }
 }

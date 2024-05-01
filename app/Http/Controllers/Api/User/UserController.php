@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CreateUserRequest;
 use App\Http\Requests\Api\UpdateUserRequest;
+use App\Models\User;
 use App\Services\User\CreateUserService;
 use App\Services\User\DeleteUserService;
 use App\Services\User\FindUserByDataService;
@@ -81,12 +82,12 @@ class UserController extends Controller
      * Update user
      *
      * @param  UpdateUserRequest $request
-     * @param  int  $id
+     * @param  User $user
      * @return HttpResponse
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $input = array_merge(['id' => $id], $request->validated());
+        $input = array_merge(['id' => $user->id], $request->validated());
         $user = resolve(UpdateUserService::class)->setParams($input)->handle();
 
         if ($user) {

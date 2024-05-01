@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -73,5 +75,35 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Check user has admin role
+     * 
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+        return $this->role === UserRole::ADMIN;
+    }
+
+    /**
+     * Check user has store role
+     * 
+     * @return boolean
+     */
+    public function isStore()
+    {
+        return $this->role === UserRole::STORE;
+    }
+
+    /**
+     * Check user has staff role
+     * 
+     * @return boolean
+     */
+    public function isStaff()
+    {
+        return $this->role === UserRole::STAFF;
     }
 }
