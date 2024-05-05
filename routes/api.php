@@ -18,8 +18,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::POST('payment', [PaymentController::class, 'payment']);
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+    Route::get('user-info', [AuthController::class, 'userInfo'])->middleware('auth:api');
+});
 
 Route::middleware(['auth:api'])->group(function () {
     Route::group(['prefix' => 'users'], function () {

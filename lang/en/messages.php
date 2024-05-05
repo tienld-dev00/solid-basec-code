@@ -17,9 +17,13 @@ return [
         'failed' => 'These credentials do not match our records.',
         'unauthorized' => 'You do not have permission to access this resource.',
         'login_success' => 'Login successful!',
-        'login_server_error' => 'An error occurred while trying to log in. Please try again later.',
+        'login_fail' => 'An error occurred while trying to log in. Please try again later.',
         'register_success' => 'Registration successful!',
-        'register_server_error' => 'An error occurred while trying to register. Please try again later.',
+        'register_fail' => 'An error occurred while trying to register. Please try again later.',
+        'logout_success' => 'Logged out successfully!',
+        'logout_fail' => 'An error occurred while trying to log out. Please try again later.',
+        'get_user_info_success' => 'Get user information successfully!',
+        'get_user_info_fail' => 'An error occurred while trying to get user information. Please try again later.'
     ],
     'http_status_message' => [
         'not_found' => 'Not found.'
