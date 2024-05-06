@@ -23,23 +23,21 @@ class Task extends Model
         'user_id',
     ];
 
-    public static $filterable = [
-        'id',
+    const filterable = [
         'user_id',
         'group_id',
         'due_date',
         'is_completed'
     ];
 
-    public static $sortable = [
-        'id',
+    const sortable = [
         'created_at',
         'updated_at',
         'due_date',
         'title'
     ];
 
-    public static $searchable = [
+    const searchable = [
         'title',
         'description'
     ];

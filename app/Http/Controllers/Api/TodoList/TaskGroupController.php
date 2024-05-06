@@ -40,7 +40,7 @@ class TaskGroupController extends Controller
     /**
      * Create task group
      *
-     * @param  Request $request
+     * @param  CreateTaskGroupRequest $request
      * @return HttpResponse
      */
     public function store(CreateTaskGroupRequest $request)
@@ -62,8 +62,8 @@ class TaskGroupController extends Controller
     /**
      * Update task group
      *
-     * @param  Request $request
-     * @param  int $groupId
+     * @param  UpdateTaskGroupRequest $request
+     * @param  TaskGroup $taskGroup
      * @return HttpResponse
      */
     public function update(UpdateTaskGroupRequest $request, TaskGroup $taskGroup)
@@ -88,7 +88,8 @@ class TaskGroupController extends Controller
     /**
      * Delete task group by id
      *
-     * @param  TaskGroup  $taskGroup
+     * @param DeleteTaskGroupRequest $request
+     * @param TaskGroup $taskGroup
      * @return HttpResponse
      */
     public function destroy(DeleteTaskGroupRequest $request, TaskGroup $taskGroup)

@@ -20,6 +20,7 @@ class TaskController extends Controller
     /**
      * Get tasks by query url
      *
+     * @param Request
      * @return HttpResponse
      */
     public function index(Request $request)
@@ -41,7 +42,7 @@ class TaskController extends Controller
     /**
      * Create task
      *
-     * @param  Request $request
+     * @param  CreateTaskRequest $request
      * @return HttpResponse
      */
     public function store(CreateTaskRequest $request)
@@ -61,8 +62,8 @@ class TaskController extends Controller
     /**
      * Update task
      *
-     * @param  Request $request
-     * @param  int $taskId
+     * @param  UpdateTaskRequest $request
+     * @param  Task $task
      * @return HttpResponse
      */
     public function update(UpdateTaskRequest $request, Task $task)
@@ -83,7 +84,8 @@ class TaskController extends Controller
     /**
      * Delete task
      *
-     * @param  int  $taskId
+     * @param DeleteTaskRequest $request
+     * @param Task $task
      * @return HttpResponse
      */
     public function destroy(DeleteTaskRequest $request, Task $task)

@@ -5,6 +5,7 @@ namespace App\Repositories\Task;
 use App\Interfaces\Task\TaskRepositoryInterface;
 use App\Models\Task;
 use App\Repositories\BaseRepository;
+use Illuminate\Database\Eloquent\Builder;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface
 {
@@ -14,44 +15,59 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
     }
 
     /**
-     * Get data with filter, sort and search
+     * Apply filter to builder
      * 
-     * @param array $filters e.g. $filters[0] = [col,operator,value]
-     * @param array $sorts e.g. $sorts[0] = [col,desc]
-     * @param array $search e.g $search[0] = [col,value] 
-     * @param int $limit
+     * @param Builder $builder
+     * @param string $column
+     * @param string $value
+     * @param string $operator
      * 
-     * @return \Illuminate\Pagination\LengthAwarePaginator|Task[]
+     * @return Builder
      */
-    public function getByQuery(
-        array $filters = [],
-        array $sorts = [],
-        array $search = [],
-        int $limit = 0
+    public function applyFilter(
+        Builder $builder,
+        string $column,
+        string $value,
+        string $operator = '='
     ) {
-        $query = $this->model;
+        return $builder->where($column, $operator, $value);
+    }
 
-        /** Apply filters */
-        $query = $query->where($filters);
+    /**
+     * Apply search to builder
+     * 
+     * @param Builder $builder
+     * @param array $columns
+     * @param string $value
+     * 
+     * @return Builder
+     */
+    public function applySearch(
+        Builder $builder,
+        array $columns,
+        string $value
+    ) {
+        return $builder->where(function ($builder) use ($columns, $value) {
+            foreach ($columns as $column) {
+                $builder->orWhere($column, 'like', '%' . $value . '%');
+            }
+        });
+    }
 
-        /** Apply search */
-        if ($search) {
-            $query = $query->where(function ($query) use ($search) {
-                foreach ($search as $column => $value) {
-                    $query = $query->orWhere($column, 'like', "%$value%");
-                }
-            });
-        }
-
-        /** Apply sorts */
-        foreach ($sorts as $condition) {
-            $query = $query->orderBy(...$condition);
-        }
-
-        if ($limit > 0) {
-            return $query->paginate($limit);
-        }
-
-        return $query->get();
+    /**
+     * Apply sort to builder
+     * 
+     * @param Builder $builder
+     * @param string $column
+     * @param string $direction
+     * 
+     * @return Builder
+     */
+    public function applySort(
+        Builder $builder,
+        string $column,
+        string $direction = 'asc'
+    ) {
+        return $builder->orderBy($column, $direction);
     }
 }

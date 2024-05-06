@@ -20,56 +20,52 @@ class GetTaskByQueryService extends BaseService
     public function handle()
     {
         try {
-            return $this->taskRepository->getByQuery(
-                $this->data['filters'] ?? [],
-                $this->data['sorts'] ?? [],
-                $this->data['search'] ?? [],
+            $builder = Task::query();
+
+            //** Apply filters */
+            if (isset($this->data['filters'])) {
+                foreach ($this->data['filters'] as $column => $value) {
+                    /** example $column => 'operator,value'|'value' */
+                    if (in_array($column, Task::filterable)) {
+                        $condition = explode(',', $value);
+
+                        if (count($condition) === 1) {
+                            $this->taskRepository->applyFilter($builder, $column, $value);
+                            continue;
+                        }
+
+                        $this->taskRepository->applyFilter(
+                            $builder,
+                            $column,
+                            $condition[1],
+                            $condition[0]
+                        );
+                    }
+                }
+            }
+
+            //** Apply search */
+            $this->taskRepository->applySearch(
+                $builder,
+                Task::searchable,
+                $this->data['search'] ?? ''
             );
+
+            //** Apply sorts */
+            if (isset($this->data['sorts'])) {
+                foreach ($this->data['sorts'] as $column => $direction) {
+                    /** example $column => 'desc' */
+                    if (in_array($column, Task::sortable)) {
+                        $this->taskRepository->applySort($builder, $column, $direction);
+                    }
+                }
+            }
+
+            return $builder->get();
         } catch (Exception $e) {
             Log::info($e);
 
             return false;
         }
-    }
-
-    /**
-     * Set parameters for filtering, sorting, and searching from request query.
-     * 
-     * @param array|null $data The data containing filters, sorts, and search text
-     * @return $this
-     */
-    public function setParams($data = null)
-    {
-        $filters = [];
-        $sorts = [];
-        $search = [];
-
-        if (isset($data['filters'])) {
-            foreach ($data['filters'] as $column => $value) {
-                if (in_array($column, Task::$filterable)) {
-                    array_push($filters, [$column, ...explode(',', $value)]);
-                }
-            }
-        }
-
-        if (isset($data['sorts'])) {
-            foreach ($data['sorts'] as $column => $direction) {
-                if (in_array($column, Task::$sortable)) {
-                    array_push($sorts, [$column, ...explode(',', $direction)]);
-                }
-            }
-        }
-
-        if (isset($data['search'])) {
-            foreach (Task::$searchable as $column) {
-                $search[$column] = $data['search'];
-            }
-        }
-
-        $this->data['filters'] = $filters;
-        $this->data['sorts'] = $sorts;
-        $this->data['search'] = $search;
-
-        return $this;
     }
 }
