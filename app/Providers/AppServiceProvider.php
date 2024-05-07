@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use App\Interfaces\Email\EmailServiceInterface;
+use App\Interfaces\Task\TaskRepositoryInterface;
+use App\Interfaces\TaskGroup\TaskGroupRepositoryInterface;
 use App\Interfaces\User\UserRepositoryInterface;
+use App\Repositories\Task\TaskRepository;
+use App\Repositories\TaskGroup\TaskGroupRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Email\EmailService;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(TaskRepositoryInterface::class, TaskRepository::class);
+        $this->app->bind(TaskGroupRepositoryInterface::class, TaskGroupRepository::class);
         $this->app->bind(EmailServiceInterface::class, EmailService::class);
     }
 

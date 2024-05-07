@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\TodoList\TaskGroupController;
+use App\Http\Controllers\Api\TodoList\TaskController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Payment\PaymentController;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +34,23 @@ Route::middleware(['auth:api'])->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy']);
         Route::get('/{id}', [UserController::class, 'show']);
         Route::patch('/{user}', [UserController::class, 'update'])->can('update', 'user');
+    });
+});
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::group(['prefix' => 'todo'], function () {
+        Route::group(['prefix' => 'groups'], function () {
+            Route::get('', [TaskGroupController::class, 'index']);
+            Route::post('', [TaskGroupController::class, 'store']);
+            Route::put('/{taskGroup}', [TaskGroupController::class, 'update']);
+            Route::delete('/{taskGroup}', [TaskGroupController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'tasks'], function () {
+            Route::get('', [TaskController::class, 'index']);
+            Route::post('', [TaskController::class, 'store']);
+            Route::put('/{task}', [TaskController::class, 'update']);
+            Route::delete('/{task}', [TaskController::class, 'destroy']);
+        });
     });
 });
