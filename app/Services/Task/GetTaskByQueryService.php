@@ -27,18 +27,24 @@ class GetTaskByQueryService extends BaseService
                 foreach ($this->data['filters'] as $column => $value) {
                     /** example $column => 'operator,value'|'value' */
                     if (in_array($column, Task::filterable)) {
-                        $condition = explode(',', $value);
+                        $commaPosition = strpos($value, ',');
 
-                        if (count($condition) === 1) {
-                            $this->taskRepository->applyFilter($builder, $column, $value);
+                        if ($commaPosition) {
+                            $operator = substr($value, 0, $commaPosition);
+                            $valueFilter = substr($value, $commaPosition + 1);
+                            $this->taskRepository->applyFilter(
+                                $builder,
+                                $column,
+                                $valueFilter,
+                                $operator
+                            );
                             continue;
                         }
 
                         $this->taskRepository->applyFilter(
                             $builder,
                             $column,
-                            $condition[1],
-                            $condition[0]
+                            $value,
                         );
                     }
                 }
